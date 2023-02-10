@@ -10,3 +10,7 @@ En este repositorio se encuentra implementada de manera sencilla un boletín de 
 ## Links
 - [Pagina Web del proyecto : https://dolar-arg.000webhostapp.com/](https://dolar-arg.000webhostapp.com/)
 - [Repo del front: hhttps://github.com/LeanCabeza/dolarArg-Front](https://github.com/LeanCabeza/dolarArg-Front)
+
+## Screnshots de los emails que envia MS
+![Notification](https://github.com/LeanCabeza/dolarArg-Front/blob/main/assets/img/screenshots/notification.png?raw=true)
+![Alta](https://github.com/LeanCabeza/dolarArg-Front/blob/main/assets/img/screenshots/alta.png?raw=true)
