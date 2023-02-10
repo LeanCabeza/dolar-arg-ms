@@ -7,4 +7,6 @@ En este repositorio se encuentra implementada de manera sencilla un boletín de 
 
 ### Cabe destacar que los emails que se envian son en formato HTML y tienen logica de data weave aplicada sobre el html.
  
-[URL : https://dolar-arg.000webhostapp.com/](https://dolar-arg.000webhostapp.com/)
+## Links
+- [Pagina Web del proyecto : https://dolar-arg.000webhostapp.com/](https://dolar-arg.000webhostapp.com/)
+- [Repo del front: hhttps://github.com/LeanCabeza/dolarArg-Front](https://github.com/LeanCabeza/dolarArg-Front)
