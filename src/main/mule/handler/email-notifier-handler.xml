@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="email-notifier-handlerSub_Flow" doc:id="7b6c7532-ed3e-4480-ade4-423894808d31" >
+		<flow-ref doc:name="Go to Orchestrator" doc:id="a5e59ec9-ef60-4b0c-873d-c800a95ca667" name="email-notifier-orchestratorSub_Flow"/>
+	</sub-flow>
+</mule>

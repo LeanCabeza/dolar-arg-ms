@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
+	<sub-flow name="delete-email-orchestratorSub_Flow" doc:id="c8fd4051-b89a-48a2-9a10-7b3d4f559110" >
+		<flow-ref doc:name="Go to Client" doc:id="aa40c7c6-236c-4f2e-b6da-85275ae894b9" name="delete-email-client"/>
+	</sub-flow>
+</mule>

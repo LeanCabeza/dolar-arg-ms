@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="get-dolar-cotizacion-orchestratorSub_Flow" doc:id="3c6cefc8-29ac-4931-8a18-e7ed9bbff6d6" >
+		<flow-ref doc:name="Get Cotizacion Dolar" doc:id="017b0ece-ba5d-463d-8f6e-ea58198c0ec5" name="get-dolar-cotizacion-client"/>
+		<ee:transform doc:name="iconsAndDesc" doc:id="50e3e200-f61d-43c7-b140-d8073cf900a2" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="iconsAndDesc" ><![CDATA[%dw 2.0
+output application/java
+---
+[
+    {
+        "name": "Dolar Oficial",
+        "icon": "dolarOficial.png",
+        "color": "#FFF2F2",
+        "iconComment": "increase.png",
+        "comment": "Cotización oficial para adquirir dólares en el banco"
+    },
+    {
+        "name": "Dolar Blue",
+        "icon": "dolarBlue.png",
+        "color": "#FFF2F2",
+        "iconComment": "lineGraphic.png",
+        "comment": "Opción para comprar dólares fuera del sistema financiero oficial"
+    },
+    {
+        "name": "Dolar Soja",
+        "icon": "dolarSoja.png",
+        "color": "#FFF2F2",
+        "iconComment": "dollars.png",
+        "comment": "Utilizado por exportadores que buscan cambiar sus ganancias en dólares."
+    },
+    {
+        "name": "Dolar Contado con Liqui",
+        "icon": "dollarLiqui.png",
+        "color": "#FFF2F2",
+        "iconComment": "fire.png",
+        "comment": "Herramienta financiera, que permite cambiar pesos por dólares en el exterior."
+    },
+    {
+        "name":  "Dolar Bolsa",
+        "icon": "economic.png",
+        "color": "#FFF2F2",
+        "iconComment":  "checked.png",
+        "comment": "La alternativa para comprar dólares en el mercado electrónico de pagos (MEP)."
+    },
+    {
+        "name": "Bitcoin",
+        "icon": "bitcoin.png",
+        "color": "#FFF2F2",
+        "iconComment": "bitcoin.png",
+        "comment": "Esta opción está en constante actividad y no se detiene, sin importar horarios, fines de semana o feriados cambiarios."
+    },
+    {
+        "name": "Dolar turista",
+        "icon": "dollarTourist.png",
+        "color": "#FFF2F2",
+        "iconComment": "dollarTourist.png",
+        "comment": "Cotización para turistas que desean comprar dólares con sus tarjetas internacionales."
+    }
+]]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Map Output" doc:id="89ff3dcc-fdeb-45c8-b4bf-d12ee28d2854" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+fun getIconAndDesc( nombre: String) = (vars.iconsAndDesc filter ( upper($.name replace (" ") with "") == upper(nombre replace (" ") with "") ))[0]
+var excepted = ["Argentina", "Dolar", "Bitcoin"]
+output application/json
+---
+(payload.casa map {
+			    	name: $.nombre,
+			        buy: $.compra,
+			        sell: $.venta,
+			        variation: $.variacion,
+			        color: getIconAndDesc($.nombre).color,
+			        icon: getIconAndDesc($.nombre).icon,
+			        iconComment: getIconAndDesc($.nombre).iconComment,
+			        comment: getIconAndDesc($.nombre).comment
+        		 }) filter (!(excepted contains $.name))]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="8deb7806-da2a-4e97-bd70-85323bc3f26e" message="#[payload]"/>
+	</sub-flow>
+</mule>

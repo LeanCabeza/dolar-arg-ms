@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<sub-flow name="post-email-orchestratorSub_Flow" doc:id="0fa87ec6-1d25-4730-b410-2937c3f88e28" >
+		<ee:transform doc:name="Payload" doc:id="690d82d2-dbf1-4089-99e8-23ca44420265" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	email: payload.email,
+	fechaAlta: now() >> "America/Argentina/Buenos_Aires",
+	estado: "ACTIVO"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="Go to Client" doc:id="04252400-2089-4ca9-802e-172b87635d1b" name="insert-mail-mongo-client"/>
+		<async doc:name="Async" doc:id="524cb858-b86d-4634-b5a5-f6bad4c98be0" >
+			<choice doc:name="Choice" doc:id="eee95333-d86f-4470-8dd6-3fe0e1d5abb0" >
+				<when expression="#[payload != null]">
+					<ee:transform doc:name="email" doc:id="106a13a1-abdf-421b-aa31-1d4ad156ca1e">
+						<ee:message />
+						<ee:variables>
+							<ee:set-variable variableName="email"><![CDATA[%dw 2.0
+output application/json
+---
+[payload.email]]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<parse-template doc:name="emailAltaNotification" doc:id="67218265-e01a-4deb-8571-aad57101c551" location="emailAltaNotification.html" outputMimeType="text/html" />
+					<email:send doc:name="Send" doc:id="f991b90b-3c22-41aa-a8d3-ff6512c8f5a1" config-ref="Email_SMTP" fromAddress="NotificacionesDolar" subject="Cotizacion del dolar HOY!" toAddresses="#[vars.email]" >
+						<email:body contentType="text/html" contentTransferEncoding="Quoted-Printable" />
+					</email:send>
+				</when>
+			</choice>
+		</async>
+		<ee:transform doc:name="Output" doc:id="cda72f82-05f7-4229-9675-5ca2c8ca291d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+if(payload != null) "Positivo" else "Negativo"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

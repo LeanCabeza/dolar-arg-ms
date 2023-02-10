@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="delete-email-client" doc:id="4ec35bcf-e6c7-4d21-9731-ed7b3141f9cc" >
+		<mongo:update-documents collectionName="emails" doc:name="Update documents" doc:id="9dd94012-0748-463a-9eea-e83de8c62e0b" config-ref="MongoDB_Config" >
+			<mongo:query ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	"email": payload.email
+}]]]></mongo:query>
+			<mongo:content-to-update ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	"estado": "BAJA"
+}]]]></mongo:content-to-update>
+		</mongo:update-documents>
+		<logger level="INFO" doc:name="Log Result" doc:id="cdef96b7-0fc9-41a1-af90-082577411fc3" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="insert-mail-mongo-client" doc:id="5a26f7e8-92e2-455f-8d77-c96ca8ea74a1" >
+		<mongo:insert-document doc:name="Insert document" doc:id="88e2e4f9-7a1e-4bb7-a10a-07334b6b8421" config-ref="MongoDB_Config" collectionName="emails"/>
+		<logger level="INFO" doc:name="Log Result Insert" doc:id="25ac7bee-19c8-4ada-b8ab-d67c2ad485b8" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="obtain-emails" doc:id="99de4dda-d30c-4ebd-91cb-03c9902e0231" >
+		<mongo:find-documents doc:name="Find documents" doc:id="f48f54de-41ad-4cb6-8a34-6cdb6ea6e5d2" config-ref="MongoDB_Config" collectionName="emails" fields=",">
+			<mongo:query ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	"estado": "ACTIVO"
+}]]]></mongo:query>
+		</mongo:find-documents>
+		<logger level="INFO" doc:name="Log Result" doc:id="b8d5ce16-1cb7-4a07-b2cb-1327302758c3" message="#[payload]" />
+	</sub-flow>
+</mule>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="get-dolar-cotizacion-handlerSub_Flow" doc:id="a49fb991-c6dd-47bb-9838-b48fd7c5a473" >
+		<flow-ref doc:name="Go to Orchestrator" doc:id="3fba7859-3dd3-497b-9a94-28d4c3628da2" name="get-dolar-cotizacion-orchestratorSub_Flow"/>
+	</sub-flow>
+</mule>

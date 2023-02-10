@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="email-notifier-orchestratorSub_Flow" doc:id="9efc3f5c-4aee-4c27-9179-90be84391a94" >
+		<flow-ref doc:name="Obtain Emails" doc:id="0b06e604-9372-4552-8d36-bc081adc5a16" name="obtain-emails"/>
+		<flow-ref doc:name="Get Cotizaciones" doc:id="dea32c26-1c8e-4ea8-96ab-d4f7b7c93267" name="get-dolar-cotizacion-orchestratorSub_Flow" target="getCotizaciones"/>
+		<parallel-foreach doc:name="Parallel For Each" doc:id="dac4ec51-525a-4aed-8568-5417a5b0ecde" collection="#[payload.email]">
+			<ee:transform doc:name="email" doc:id="0b78d6d3-a2bc-4fca-9773-61f553b82c35" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="email" ><![CDATA[%dw 2.0
+output application/json
+---
+[payload]]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<parse-template doc:name="Email Template" doc:id="4b39d292-bd33-479b-8939-f1e87cd0955b" location="emailTemplate.html" outputMimeType="text/html" />
+			<email:send doc:name="Send" doc:id="54bde957-5547-4915-8c2a-6a7e42bf40e1" config-ref="Email_SMTP" fromAddress="NotificacionesDolar" subject="Cotizacion del dolar HOY!" toAddresses="#[vars.email]">
+			<email:body contentType="text/html" contentTransferEncoding="Quoted-Printable">
+			</email:body>
+		</email:send>
+		</parallel-foreach>
+		<logger level="INFO" doc:name="Logger" doc:id="ca3f373c-0173-418d-b21b-3e21447dc72b" message="#[payload]"/>
+	</sub-flow>
+</mule>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="delete-email-handlerSub_Flow" doc:id="3d8ff3a2-6b79-4979-8f16-ed8034114c1a" >
+		<flow-ref doc:name="Go to Orchestrator" doc:id="3fba7859-3dd3-497b-9a94-28d4c3628da2" name="delete-email-orchestratorSub_Flow" />
+	</sub-flow>
+</mule>

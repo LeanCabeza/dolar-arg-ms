@@ -1,0 +1,49 @@
+#%RAML 1.0
+title: dolar-arg-services
+version: v1.0
+
+/dolar:
+  /cotizaciones:
+    get:
+      displayName: Obtener cotizacion dolar
+      description: Este endpoint retorna las cotizaciones de todos los dolares existentes.
+      responses:
+        200:
+          description: Retorna las cotizaciones
+          body: 
+            application/json:
+        500:
+          description: No se pudieron obtener las cotizaciones
+          body: 
+            application/json:
+/email:
+  post:
+    displayName: Guardar mail
+    description: Este endpoint guarda un mail en la base de datos MongoDB.
+    body:
+      application/json:  
+        example: { "email": "test@gmail.com"}
+    responses:
+      200:
+        description: Resultado Positivo
+        body: 
+          application/json:
+      500:
+        description: Resultado Negativo
+        body: 
+          application/json:  
+  delete:
+    displayName: Guardar mail
+    description: Este endpoint guarda un mail en la base de datos MongoDB.
+    body:
+      application/json:  
+        example: { "email": "test@gmail.com"}
+    responses:
+      200:
+        description: Resultado Positivo
+        body: 
+          application/json:
+      500:
+        description: Resultado Negativo
+        body: 
+          application/json:  
